@@ -8,7 +8,7 @@ Just my excuse to tinker at a deeper level w/ nix honestly.
 
 
 This approach, contrary to the others explored, actually uses Docker (!?). This may seem counterintuitive given that Docker perf on codespaces was not acceptable. The benefits of this approach over the pure nix solutions are theoretically:
-  1. Total isolation to guard against edge failues from things like host OS, architecture, sys libraries, etc.
+  1. Total isolation to guard against edge failues from things like host OS, architecture, sys libraries, etc. (AFAIK it is not possible to have a single conf for machines w/ diff underlying architectures)
   1. Nix eliminates nondetermism potentially introduced from docker image build
   1. Base image is debian-slim; I'm not sure what Dr. Stewart used in his exploration of codespaces/how it compares to this image, but there's improvement there potentially.
   1. Not sure how likely, but someone may already use Nix in a way that is incompatible with how I approach the pure-nix solutions (I'm not a nix expert, so idk!)
@@ -34,6 +34,20 @@ To use flakes you have to enable it in conf.nix (or is it nix.conf?, it's been a
 **TODO** I'd like to see if the `nix-search` (`nix-search-cli` on the AUR) is any use in speeding this process up, 
 
 ### Errors
+
+Build in container failed, 
+```bash
+...
+[2025-01-14T04:59:03.738Z] Command failed: /opt/visual-studio-code/code /home/mfwolffe/.vscode/extensions/ms-vscode-remote.remote-containers-0.394.0/dist/spec-node/devContainersSpecCLI.js up --user-data-folder /home/mfwolffe/.config/Code/User/globalStorage/ms-vscode-remote.remote-containers/data --container-session-data-folder /tmp/devcontainers-d4863c06-72ea-4dde-8138-f3bba8be4ec11736830740892 --workspace-folder /home/mfwolffe/Documents/MuNix --workspace-mount-consistency cached --gpu-availability detect --id-label devcontainer.local_folder=/home/mfwolffe/Documents/MuNix --id-label devcontainer.config_file=/home/mfwolffe/Documents/MuNix/.devcontainer/devcontainer.json --log-level debug --log-format json --config /home/mfwolffe/Documents/MuNix/.devcontainer/devcontainer.json --default-user-env-probe loginInteractiveShell --mount type=volume,source=vscode,target=/vscode,external=true --skip-post-create --update-remote-user-uid-default on --mount-workspace-git-root --include-configuration --include-merged-configuration
+[2025-01-14T04:59:03.738Z] Exit code 1
+...
+```
+I again, rather foolishly have decided to write a configuration file from scratch (this time `devcontainer.json`) instead of extending the example in the repo.
+
+See 39abd4d for the changes.
+
+
+
 #### VSCode thinks I'm not in `docker` group
 iirc vscode should not be ran as root so that is not the fix.
 
@@ -46,6 +60,9 @@ cat /etc/group | grep docker # losing my mind lol
 ```
 
 It may be how I was launching (w/ `rofi` - usually I launch from shell)?
+
+##### Resolved by launching vscode from shell
+(requires code command in path)
 
 #### Legacy builder
 On building docker image I got:
