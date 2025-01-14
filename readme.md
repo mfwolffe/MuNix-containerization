@@ -20,6 +20,9 @@ This approach, contrary to the others explored, actually uses Docker (!?). This 
   * I did not realize I'd need to use compose due to how we run the backend, but I want to get a successful spinup from just the flake first, so that is the current goal.
 
   * Linter got upset by `devcontainer.json` structure; needed to update. see Errors below.
+  
+  * After gutting  `devcontainer.json` in favor of the boilerplate found on the repo, I decided not to try to 'fix' the aforementioned syntax
+    * **the build and container spinup were successful** (39abd4d) 
 
 ##### Experimental Features (**TODO**)
 To use flakes you have to enable it in conf.nix (or is it nix.conf?, it's been a minute), and I'm not sure yet if I will need to have to add instructions to dockerfile to get that configuration file made etc.
