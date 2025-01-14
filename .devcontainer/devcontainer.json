@@ -1,0 +1,21 @@
+{
+  "name": "MuNix w. Flakes",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceFolder": "/workspace",
+  "runArgs": ["--entrypoint", "sh", "-c", "nix develop .#default && sleep infinity"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode-remote.remote-containers",
+        "arrterian.nix-env-selector"
+      ],
+      "settings": {
+        "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix"
+      },
+    }
+  },
+  "onCreateCommand": "nix develop .#default"
+}
